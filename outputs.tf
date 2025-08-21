@@ -30,7 +30,7 @@ EOT
 output "automatic_dns_validation_records" {
   description = "DNS validation records automatically created in Route53"
   value = {
-    for k, r in aws_route53_record.validation :
+    for r in aws_route53_record.validation :
     k => {
       r.name => r.records[0]
     }
