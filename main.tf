@@ -18,7 +18,7 @@ resource "aws_acm_certificate" "this" {
 resource "aws_route53_record" "validation" {
   for_each = {
     for k, v in aws_acm_certificate.this : k => v
-    if var.certs[k].validation_method == "dns"
+    if var.certs[k].validation_method == "automatic"
   }
 
   zone_id = var.certs[each.key].zone_id
