@@ -28,8 +28,9 @@ EOT
 
 # DNS records that Terraform actually created in Route53
 output "automatic_dns_validation_records" {
+  description = "DNS validation records automatically created in Route53"
   value = {
     for k, r in aws_route53_record.validation :
-    k => { r.name = r.records[0] }
+    k => { "${r.name}" = tolist(r.records)[0] }
   }
 }
