@@ -29,11 +29,25 @@ resource "aws_route53_record" "validation" {
 }
 
 # ACM certificate validation (only for automatic DNS)
+#resource "aws_acm_certificate_validation" "this" {
+#  for_each = aws_route53_record.validation
+#
+#  certificate_arn         = aws_acm_certificate.this[each.key].arn
+#  validation_record_fqdns = [each.value.fqdn]
+#
+#  depends_on = [aws_route53_record.validation]
+#}
+
 resource "aws_acm_certificate_validation" "this" {
-  for_each = aws_route53_record.validation
+  for_each = {
+    for k, cert in aws_acm_certificate.this :
+    k => cert
+    if var.certs[k].validation_method == "automatic"
+  }
 
-  certificate_arn         = aws_acm_certificate.this[each.key].arn
-  validation_record_fqdns = [each.value.fqdn]
-
-  depends_on = [aws_route53_record.validation]
+  certificate_arn = each.value.arn
+  validation_record_fqdns = [
+    for o in tolist(each.value.domain_validation_options) :
+    o.resource_record_name
+  ]
 }
