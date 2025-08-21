@@ -38,16 +38,16 @@ resource "aws_route53_record" "validation" {
 #  depends_on = [aws_route53_record.validation]
 #}
 
-resource "aws_acm_certificate_validation" "this" {
-  for_each = {
-    for k, cert in aws_acm_certificate.this :
-    k => cert
-    if var.certs[k].validation_method == "automatic"
-  }
+#resource "aws_acm_certificate_validation" "this" {
+#  for_each = {
+#    for k, cert in aws_acm_certificate.this :
+#    k => cert
+#    if var.certs[k].validation_method == "automatic"
+#  }
 
-  certificate_arn = each.value.arn
-  validation_record_fqdns = [
-    for o in tolist(each.value.domain_validation_options) :
-    o.resource_record_name
-  ]
-}
+#  certificate_arn = each.value.arn
+#  validation_record_fqdns = [
+#    for o in tolist(each.value.domain_validation_options) :
+#    o.resource_record_name
+#  ]
+#}
