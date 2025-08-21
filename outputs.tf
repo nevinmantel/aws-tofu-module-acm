@@ -5,7 +5,6 @@ output "pending_validation_records" {
     for k, cert in aws_acm_certificate.this :
     k => [for opt in cert.domain_validation_options : {
       domain_name           = opt.domain_name
-      validation_domain     = opt.domain_validation_domain
       resource_record_name  = opt.resource_record_name
       resource_record_type  = opt.resource_record_type
       resource_record_value = opt.resource_record_value
