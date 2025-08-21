@@ -26,15 +26,13 @@ EOT
   }
 }
 
-# DNS records that were auto-created in Route53
+# DNS records that Terraform actually created in Route53
 output "automatic_dns_validation_records" {
   description = "DNS validation records automatically created in Route53"
   value = {
-    for cert_key, cert in aws_acm_certificate.this :
-    cert_key => {
-      for opt in cert.domain_validation_options :
-      opt.resource_record_name => opt.resource_record_value
+    for k, r in aws_route53_record.validation :
+    k => {
+      r.name => r.records[0]
     }
-    if var.certs[cert_key].validation_method == "automatic"
   }
 }
