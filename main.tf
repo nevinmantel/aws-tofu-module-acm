@@ -34,4 +34,6 @@ resource "aws_acm_certificate_validation" "this" {
 
   certificate_arn         = aws_acm_certificate.this[each.key].arn
   validation_record_fqdns = [each.value.fqdn]
+
+  depends_on = [aws_route53_record.validation]
 }
