@@ -22,3 +22,15 @@ EOT
     if var.certs[k].validation_method == "manual"
   }
 }
+
+output "automatic_dns_validation_records" {
+  description = "Route53 DNS records that were created for automatic ACM certificate validation."
+  value = {
+    for k, v in aws_route53_record.validation :
+    k => {
+      name   = v.name
+      type   = v.type
+      record = v.records[0]
+    }
+  }
+}
