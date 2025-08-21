@@ -1,5 +1,5 @@
 # ARNs for automatically validated certificates
-output "certificate_arns" {
+output "pending_validation_records" {
   description = "DNS records required to validate ACM certificates. Add these manually or use Route53 for automatic validation later."
   value = {
     for k, v in aws_acm_certificate.this :
