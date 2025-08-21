@@ -22,9 +22,9 @@ resource "aws_route53_record" "validation" {
   }
 
   zone_id = var.certs[each.key].zone_id
-  name    = each.value.domain_validation_options[0].resource_record_name
-  type    = each.value.domain_validation_options[0].resource_record_type
-  records = [each.value.domain_validation_options[0].resource_record_value]
+  name    = tolist(each.value.domain_validation_options)[0].resource_record_name
+  type    = tolist(each.value.domain_validation_options)[0].resource_record_type
+  records = [tolist(each.value.domain_validation_options)[0].resource_record_value]
   ttl     = 60
 }
 
